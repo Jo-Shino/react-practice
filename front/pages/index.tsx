@@ -4,28 +4,14 @@ import styles from "../styles/Home.module.css";
 import { useForm } from "react-hook-form";
 
 export default function Home() {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
   const onSubmit = (data: any) => console.log(data);
-  console.log(watch("example")); // watch input value by passing the name of it
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* register your input into the hook by invoking the "register" function */}
-      <input
-        defaultValue="test"
-        {...(register("example"), { required: true })}
-      />
-
-      {/* include validation with required or other standard HTML validation rules */}
-      <input {...register("exampleRequired", { required: true })} />
-      {/* errors will return when field validation fails  */}
-      {errors.exampleRequired && <span>This field is required</span>}
-
+      <input {...register("firstName", { required: true, maxLength: 20 })} />
+      <input {...register("lastName", { pattern: /^[A-Za-z]+$/i })} />
+      <input type="number" {...register("age", { min: 18, max: 99 })} />
       <input type="submit" />
     </form>
   );
