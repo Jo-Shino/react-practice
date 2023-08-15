@@ -1,17 +1,40 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import { useForm } from "react-hook-form";
+import React from "react";
+import { useForm, Resolver } from "react-hook-form";
 
-export default function Home() {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data: any) => console.log(data);
+type FormValues = {
+  firstName: string;
+  lastName: string;
+};
+
+const resolver: Resolver<FormValues> = async (values) => {
+  return {
+    values: values.firstName ? values : {},
+    errors: !values.firstName
+      ? {
+          firstName: {
+            type: "required",
+            message: "This is required.",
+          },
+        }
+      : {},
+  };
+};
+
+export default function App() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({ resolver });
+  const onSubmit = handleSubmit((data) => console.log(data));
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register("firstName", { required: true, maxLength: 20 })} />
-      <input {...register("lastName", { pattern: /^[A-Za-z]+$/i })} />
-      <input type="number" {...register("age", { min: 18, max: 99 })} />
+    <form onSubmit={onSubmit}>
+      <input {...register("firstName")} placeholder="Bill" />
+      {errors?.firstName && <p>{errors.firstName.message}</p>}
+
+      <input {...register("lastName")} placeholder="Luo" />
+
       <input type="submit" />
     </form>
   );
