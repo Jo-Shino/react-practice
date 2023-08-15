@@ -1,40 +1,27 @@
-import React from "react";
-import { useForm, Resolver } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { TextField, Checkbox } from "@mui/material/";
 
-type FormValues = {
-  firstName: string;
-  lastName: string;
-};
-
-const resolver: Resolver<FormValues> = async (values) => {
-  return {
-    values: values.firstName ? values : {},
-    errors: !values.firstName
-      ? {
-          firstName: {
-            type: "required",
-            message: "This is required.",
-          },
-        }
-      : {},
-  };
-};
+interface IFormInputs {
+  TextField: string;
+  MyCheckbox: boolean;
+}
 
 export default function App() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>({ resolver });
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const { handleSubmit, control, reset } = useForm<IFormInputs>({
+    defaultValues: {
+      MyCheckbox: false,
+    },
+  });
+  const onSubmit: SubmitHandler<IFormInputs> = (data) => console.log(data);
 
   return (
-    <form onSubmit={onSubmit}>
-      <input {...register("firstName")} placeholder="Bill" />
-      {errors?.firstName && <p>{errors.firstName.message}</p>}
-
-      <input {...register("lastName")} placeholder="Luo" />
-
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        name="MyCheckbox"
+        control={control}
+        rules={{ required: true }}
+        render={({ field }) => <Checkbox {...field} />}
+      />
       <input type="submit" />
     </form>
   );
