@@ -1,40 +1,46 @@
-import React from "react";
-import { useForm, Resolver } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { TextField } from "@mui/material/";
 
-type FormValues = {
-  firstName: string;
-  lastName: string;
-};
-
-const resolver: Resolver<FormValues> = async (values) => {
-  return {
-    values: values.firstName ? values : {},
-    errors: !values.firstName
-      ? {
-          firstName: {
-            type: "required",
-            message: "This is required.",
-          },
-        }
-      : {},
-  };
-};
+interface IFormInputs {
+  TextField: number;
+  MyCheckbox: boolean;
+}
 
 export default function App() {
   const {
-    register,
     handleSubmit,
+    control,
     formState: { errors },
-  } = useForm<FormValues>({ resolver });
-  const onSubmit = handleSubmit((data) => console.log(data));
+  } = useForm<IFormInputs>();
+  const onSubmit: SubmitHandler<IFormInputs> = (data: IFormInputs) =>
+    console.log(data);
 
   return (
-    <form onSubmit={onSubmit}>
-      <input {...register("firstName")} placeholder="Bill" />
-      {errors?.firstName && <p>{errors.firstName.message}</p>}
-
-      <input {...register("lastName")} placeholder="Luo" />
-
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        name="TextField"
+        control={control}
+        rules={{
+          required: { value: true, message: "必須入力" },
+          validate: (value) => {
+            if (!Number.isNaN(Number(value))) {
+              return true;
+            }
+            return "数値を入力してください(全角不可)";
+          },
+        }}
+        render={({ field, fieldState }) => (
+          <TextField
+            {...field}
+            type="TextField"
+            label="TextField"
+            fullWidth
+            placeholder="012345678"
+            error={fieldState.invalid}
+            helperText={fieldState.invalid ? errors.TextField?.message : ""}
+          />
+        )}
+      />
       <input type="submit" />
     </form>
   );
