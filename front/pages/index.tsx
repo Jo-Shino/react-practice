@@ -1,6 +1,13 @@
-import { Box, Button, Container } from "@mui/material";
+import { Box, Button, Container, TextField } from "@mui/material";
 import AddPeople from "../component/people/AddPeople";
-import { FormProvider, useForm } from "react-hook-form";
+import {
+  FormProvider,
+  useForm,
+  Controller,
+  FieldValues,
+  UseFormReturn,
+} from "react-hook-form";
+import { JSX, ReactNode } from "react";
 
 export interface ProposalFormInput {
   publisher: string;
@@ -29,8 +36,9 @@ export type Receiver = {
 };
 
 const Form = () => {
+  // const { control, watch } = useForm<ProposalFormInput>();
   const methods = useForm<ProposalFormInput>({});
-  const { handleSubmit } = methods;
+  const { handleSubmit, control, watch } = methods;
 
   const submit = (data: any) => {
     console.log(data); // フォームの内容が入る
@@ -38,9 +46,32 @@ const Form = () => {
 
   return (
     <Container maxWidth="xs" sx={{ mt: 6 }}>
-      {/* { FormProviderでフォームの全体を囲む } */}
       <FormProvider {...methods}>
         <Box component="form" onSubmit={handleSubmit(submit)}>
+          <Controller
+            name="title"
+            control={control}
+            rules={{
+              required: { value: true, message: "入力が必須の項目です" },
+              validate: (value) => {
+                if (value !== null || "") {
+                  return true;
+                }
+                return "文字を入力してください";
+              },
+            }}
+            render={({ field, fieldState, formState: { errors } }) => (
+              <TextField
+                {...field}
+                type="title"
+                size="small"
+                sx={{ width: 500 }}
+                placeholder="例:NFT"
+                error={fieldState.invalid}
+                helperText={fieldState.invalid ? errors.title?.message : ""}
+              />
+            )}
+          />
           <Box>
             {/* { 独自コンポーネント } */}
             <AddPeople />
