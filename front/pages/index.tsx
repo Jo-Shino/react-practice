@@ -1,47 +1,59 @@
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
-import { TextField } from "@mui/material/";
+import { Box, Button, Container } from "@mui/material";
+import AddPeople from "../component/people/AddPeople";
+import { FormProvider, useForm } from "react-hook-form";
 
-interface IFormInputs {
-  TextField: number;
-  MyCheckbox: boolean;
+export interface ProposalFormInput {
+  publisher: string;
+  title: string;
+  price: number;
+  quantity: number;
+  body: string;
+  privilege: string;
+  condition: string;
+  confirmation: string;
+  YouTubeUrl: string;
+  docURL: string;
+  address: number;
+  receiverName: string;
+  receiver_price: string;
+  occupation: string;
+  readonly id: number;
 }
 
-export default function App() {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<IFormInputs>();
-  const onSubmit: SubmitHandler<IFormInputs> = (data: IFormInputs) =>
-    console.log(data);
+export type Receiver = {
+  address: number;
+  receiverName: string;
+  price: string;
+  occupation: string;
+  readonly id: number;
+};
+
+const Form = () => {
+  const methods = useForm<ProposalFormInput>({});
+  const { handleSubmit } = methods;
+
+  const submit = (data: any) => {
+    console.log(data); // フォームの内容が入る
+  };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Controller
-        name="TextField"
-        control={control}
-        rules={{
-          required: { value: true, message: "必須入力" },
-          validate: (value) => {
-            if (!Number.isNaN(Number(value))) {
-              return true;
-            }
-            return "数値を入力してください(全角不可)";
-          },
-        }}
-        render={({ field, fieldState }) => (
-          <TextField
-            {...field}
-            type="TextField"
-            label="TextField"
-            fullWidth
-            placeholder="012345678"
-            error={fieldState.invalid}
-            helperText={fieldState.invalid ? errors.TextField?.message : ""}
-          />
-        )}
-      />
-      <input type="submit" />
-    </form>
+    <Container maxWidth="xs" sx={{ mt: 6 }}>
+      {/* { FormProviderでフォームの全体を囲む } */}
+      <FormProvider {...methods}>
+        <Box component="form" onSubmit={handleSubmit(submit)}>
+          <Box>
+            {/* { 独自コンポーネント } */}
+            <AddPeople />
+          </Box>
+          <Box textAlign="right">
+            <Button variant="contained" onClick={handleSubmit(submit)}>
+              送信
+            </Button>
+          </Box>
+        </Box>
+      </FormProvider>
+    </Container>
   );
-}
+};
+
+export default Form;
