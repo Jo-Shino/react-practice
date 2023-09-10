@@ -10,7 +10,7 @@ const AddPeople = () => {
     <Controller
       name="address"
       control={control}
-      defaultValue={0}
+      // defaultValue={0}
       rules={{
         required: { value: true, message: "必須入力" },
         validate: (value) => {

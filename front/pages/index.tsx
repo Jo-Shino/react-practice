@@ -8,6 +8,7 @@ import {
   UseFormReturn,
 } from "react-hook-form";
 import { JSX, ReactNode } from "react";
+import react, { useState } from "react";
 
 export interface ProposalFormInput {
   publisher: string;
@@ -28,9 +29,9 @@ export interface ProposalFormInput {
 }
 
 export type Receiver = {
-  address: number;
+  address: string;
   receiverName: string;
-  price: string;
+  price: number;
   occupation: string;
   readonly id: number;
 };
@@ -43,6 +44,23 @@ const Form = () => {
   const submit = (data: any) => {
     console.log(data); // フォームの内容が入る
   };
+
+  const [peoples, usePeoples] = useState<Receiver[]>([
+    {
+      address: "",
+      receiverName: "",
+      price: 0,
+      occupation: "",
+      id: 1,
+    },
+    {
+      address: "",
+      receiverName: "",
+      price: 0,
+      occupation: "",
+      id: 2,
+    },
+  ]);
 
   return (
     <Container maxWidth="xs" sx={{ mt: 6 }}>
@@ -74,7 +92,9 @@ const Form = () => {
           />
           <Box>
             {/* { 独自コンポーネント } */}
-            <AddPeople />
+            {peoples.map((people, index) => {
+              return <AddPeople key={index} />;
+            })}
           </Box>
           <Box textAlign="right">
             <Button variant="contained" onClick={handleSubmit(submit)}>
