@@ -21,11 +21,12 @@ export interface ProposalFormInput {
   confirmation: string;
   YouTubeUrl: string;
   docURL: string;
-  address: number;
-  receiverName: string;
-  receiver_price: string;
-  occupation: string;
-  readonly id: number;
+  receivers: Receiver[];
+  // address: number;
+  // receiverName: string;
+  // receiver_price: string;
+  // occupation: string;
+  // readonly id: number;
 }
 
 export type Receiver = {
