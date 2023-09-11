@@ -2,14 +2,17 @@ import { TextField, Stack } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import { ProposalFormInput } from "../../pages/index";
 import { ErrorMessage } from "@hookform/error-message";
-
-const AddPeople = () => {
+interface Receiver {
+  index: number;
+}
+const AddPeople = (props: Receiver) => {
+  const { index } = props;
   const { control } = useFormContext<ProposalFormInput>();
   //   const { control } = useFormContext<Receiver>();
 
   return (
     <Controller
-      name={`receivers.${0}.address`}
+      name={`receivers.${index}.address`}
       control={control}
       // defaultValue={0}
       rules={{
@@ -28,8 +31,8 @@ const AddPeople = () => {
             label="address"
             fullWidth
             placeholder="012345678"
-            error={errors.receivers?.[0]?.address ? true : false}
-            helperText={errors.receivers?.[0]?.message as string}
+            error={errors.receivers?.[index]?.address ? true : false}
+            helperText={errors.receivers?.[index]?.message as string}
           />
           {/* <ErrorMessage
             errors={errors}

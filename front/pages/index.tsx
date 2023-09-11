@@ -94,7 +94,7 @@ const Form = () => {
           <Box>
             {/* { 独自コンポーネント } */}
             {peoples.map((people, index) => {
-              return <AddPeople key={index} />;
+              return <AddPeople key={index} index={index} />;
             })}
           </Box>
           <Box textAlign="right">
