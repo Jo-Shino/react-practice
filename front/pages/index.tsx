@@ -1,12 +1,6 @@
 import { Box, Button, Container, TextField } from "@mui/material";
 import AddPeople from "../component/people/AddPeople";
-import {
-  FormProvider,
-  useForm,
-  Controller,
-  FieldValues,
-  UseFormReturn,
-} from "react-hook-form";
+import { FormProvider, useForm, Controller } from "react-hook-form";
 import { JSX, ReactNode } from "react";
 import react, { useState } from "react";
 
@@ -22,11 +16,6 @@ export interface ProposalFormInput {
   YouTubeUrl: string;
   docURL: string;
   receivers: Receiver[];
-  // address: number;
-  // receiverName: string;
-  // receiver_price: string;
-  // occupation: string;
-  // readonly id: number;
 }
 
 export type Receiver = {
@@ -38,9 +27,8 @@ export type Receiver = {
 };
 
 const Form = () => {
-  // const { control, watch } = useForm<ProposalFormInput>();
   const methods = useForm<ProposalFormInput>({});
-  const { handleSubmit, control, watch } = methods;
+  const { handleSubmit, control } = methods;
 
   const submit = (data: any) => {
     console.log(data); // フォームの内容が入る
