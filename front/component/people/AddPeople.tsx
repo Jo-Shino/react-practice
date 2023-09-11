@@ -28,15 +28,15 @@ const AddPeople = () => {
             label="address"
             fullWidth
             placeholder="012345678"
-            // error={errors.receivers?.address ? true : false}
-            // helperText={errors.address?.message as string}
+            error={errors.receivers?.[0]?.address ? true : false}
+            helperText={errors.receivers?.[0]?.message as string}
           />
-          <ErrorMessage
+          {/* <ErrorMessage
             errors={errors}
             name={`receivers.${0}.address`}
             as="p"
             message="⚠ 商品カテゴリを入力してください"
-          />
+          /> */}
         </Stack>
       )}
     />
