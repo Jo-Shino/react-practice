@@ -3,9 +3,12 @@ import { Controller, useFormContext } from "react-hook-form";
 import { ProposalFormInput } from "../../pages/index";
 interface Receiver {
   index: number;
+  update: any;
+  value: any;
+  removeQuestion: (index: number) => void;
 }
 const AddPeople = (props: Receiver) => {
-  const { index } = props;
+  const { index, update, value, removeQuestion } = props;
   const { control } = useFormContext<ProposalFormInput>();
 
   return (
@@ -31,6 +34,13 @@ const AddPeople = (props: Receiver) => {
             error={errors.receivers?.[index]?.address ? true : false}
             helperText={errors.receivers?.[index]?.message as string}
           />
+          <button
+            type={"button"}
+            onClick={() => removeQuestion(index)}
+            style={{ marginLeft: "16px" }}
+          >
+            削除
+          </button>
         </Stack>
       )}
     />

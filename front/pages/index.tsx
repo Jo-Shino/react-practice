@@ -1,6 +1,11 @@
 import { Box, Button, Container, TextField } from "@mui/material";
 import AddPeople from "../component/people/AddPeople";
-import { FormProvider, useForm, Controller } from "react-hook-form";
+import {
+  FormProvider,
+  useForm,
+  Controller,
+  useFieldArray,
+} from "react-hook-form";
 import { JSX, ReactNode } from "react";
 import react, { useState } from "react";
 
@@ -27,10 +32,29 @@ export type Receiver = {
 };
 
 const Form = () => {
-  const methods = useForm<ProposalFormInput>({});
+  const methods = useForm<ProposalFormInput>({
+    defaultValues: {
+      receivers: [
+        { address: "", receiverName: "", price: 0, occupation: "", id: 1 },
+      ],
+    },
+  });
   const { handleSubmit, control } = methods;
 
+  const { fields, append, update, remove } = useFieldArray({
+    control,
+    name: "receivers",
+  });
+
+  const removeQuestion = (index: number) => {
+    remove(index);
+  };
+
   const submit = (data: any) => {
+    if (data.receivers.length == 0) {
+      console.log("データがありません");
+      return;
+    }
     console.log(data); // フォームの内容が入る
   };
 
@@ -81,10 +105,32 @@ const Form = () => {
           />
           <Box>
             {/* { 独自コンポーネント } */}
-            {peoples.map((people, index) => {
-              return <AddPeople key={index} index={index} />;
+            {fields.map((field, index) => {
+              return (
+                <AddPeople
+                  key={field.id}
+                  update={update}
+                  index={index}
+                  value={field}
+                  removeQuestion={removeQuestion}
+                />
+              );
             })}
           </Box>
+          <button
+            type="button"
+            onClick={() => {
+              append({
+                address: "",
+                receiverName: "",
+                price: 0,
+                occupation: "",
+                id: 2,
+              });
+            }}
+          >
+            append
+          </button>
           <Box textAlign="right">
             <Button variant="contained" onClick={handleSubmit(submit)}>
               送信
