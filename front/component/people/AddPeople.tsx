@@ -1,20 +1,20 @@
 import { TextField, Stack } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import { ProposalFormInput } from "../../pages/index";
-import { ErrorMessage } from "@hookform/error-message";
 interface Receiver {
   index: number;
+  update: any;
+  value: any;
+  removeQuestion: (index: number) => void;
 }
 const AddPeople = (props: Receiver) => {
-  const { index } = props;
+  const { index, update, value, removeQuestion } = props;
   const { control } = useFormContext<ProposalFormInput>();
-  //   const { control } = useFormContext<Receiver>();
 
   return (
     <Controller
       name={`receivers.${index}.address`}
       control={control}
-      // defaultValue={0}
       rules={{
         required: { value: true, message: "必須入力" },
         validate: (value) => {
@@ -34,12 +34,13 @@ const AddPeople = (props: Receiver) => {
             error={errors.receivers?.[index]?.address ? true : false}
             helperText={errors.receivers?.[index]?.message as string}
           />
-          {/* <ErrorMessage
-            errors={errors}
-            name={`receivers.${0}.address`}
-            as="p"
-            message="⚠ 商品カテゴリを入力してください"
-          /> */}
+          <button
+            type={"button"}
+            onClick={() => removeQuestion(index)}
+            style={{ marginLeft: "16px" }}
+          >
+            削除
+          </button>
         </Stack>
       )}
     />
