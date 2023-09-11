@@ -21,11 +21,12 @@ export interface ProposalFormInput {
   confirmation: string;
   YouTubeUrl: string;
   docURL: string;
-  address: number;
-  receiverName: string;
-  receiver_price: string;
-  occupation: string;
-  readonly id: number;
+  receivers: Receiver[];
+  // address: number;
+  // receiverName: string;
+  // receiver_price: string;
+  // occupation: string;
+  // readonly id: number;
 }
 
 export type Receiver = {
@@ -93,7 +94,7 @@ const Form = () => {
           <Box>
             {/* { 独自コンポーネント } */}
             {peoples.map((people, index) => {
-              return <AddPeople key={index} />;
+              return <AddPeople key={index} index={index} />;
             })}
           </Box>
           <Box textAlign="right">
