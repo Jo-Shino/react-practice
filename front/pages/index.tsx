@@ -6,7 +6,6 @@ import {
   Controller,
   useFieldArray,
 } from "react-hook-form";
-import react, { useState } from "react";
 
 export interface PurchaseFormInput {
   product_name: string;
@@ -83,7 +82,6 @@ const Form = () => {
             )}
           />
           <Box>
-            {/* { 独自コンポーネント } */}
             {fields.map((field, index) => {
               return (
                 <AddPeople
