@@ -1,19 +1,17 @@
 import { TextField, Stack } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
-import { ProposalFormInput } from "../../pages/index";
+import { PurchaseFormInput } from "../../pages/index";
 interface Receiver {
   index: number;
-  update: any;
-  value: any;
-  removeQuestion: (index: number) => void;
+  removeIndex: (index: number) => void;
 }
 const AddPeople = (props: Receiver) => {
-  const { index, update, value, removeQuestion } = props;
-  const { control } = useFormContext<ProposalFormInput>();
+  const { index, removeIndex } = props;
+  const { control } = useFormContext<PurchaseFormInput>();
 
   return (
     <Controller
-      name={`receivers.${index}.address`}
+      name={`receivers.${index}.receiver_name`}
       control={control}
       rules={{
         required: { value: true, message: "必須入力" },
@@ -31,12 +29,12 @@ const AddPeople = (props: Receiver) => {
             label="address"
             fullWidth
             placeholder="012345678"
-            error={errors.receivers?.[index]?.address ? true : false}
+            error={errors.receivers?.[index]?.receiver_name ? true : false}
             helperText={errors.receivers?.[index]?.message as string}
           />
           <button
             type={"button"}
-            onClick={() => removeQuestion(index)}
+            onClick={() => removeIndex(index)}
             style={{ marginLeft: "16px" }}
           >
             削除
