@@ -73,7 +73,7 @@ const Form = () => {
                 type="product_name"
                 size="small"
                 sx={{ width: 500 }}
-                placeholder="例:NFT"
+                placeholder="例:えんぴつ"
                 error={fieldState.invalid}
                 helperText={
                   fieldState.invalid ? errors.product_name?.message : ""
@@ -102,7 +102,7 @@ const Form = () => {
               });
             }}
           >
-            append
+            追加
           </button>
           <Box textAlign="right">
             <Button variant="contained" onClick={handleSubmit(submit)}>
